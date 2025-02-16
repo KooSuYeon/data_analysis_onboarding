@@ -1,5 +1,30 @@
 # data_analysis_onboarding_구수연
 
+### 👁️ How To use
+
+
+```
+
+# 가상환경 생성 명령어
+(MAC) python3 -m venv venv
+(WIN) python -m venv venv
+
+# 가상환경 활성화 명령어
+(MAC) source venv/bin/activate
+(WIN) venv\Scripts\activate
+
+# 필요한 라이브러리 설치 명령어
+pip install -r requirements.txt
+
+# 필요한 주석 해제 후에
+python3 analysis.py
+
+```
+---
+### Git 버전 관리 전략
+- DOCS : bypass main merge
+- else : 반드시 Pull Request 생성 후 merge
+
 ---
 ### 💻 사용한 데이터 집계 기능
 
