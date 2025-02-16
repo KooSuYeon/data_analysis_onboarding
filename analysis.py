@@ -80,7 +80,7 @@ def get_top_count_and_user_id_by_type(dataframe):
 0  interview  223856945edb24          7
 1     resume  142c51345184f1         11
 """
-print(get_top_count_and_user_id_by_type(df))
+# print(get_top_count_and_user_id_by_type(df))
 
 
 
@@ -314,6 +314,47 @@ resume 유형의 사용자는 Hanghae에서 높은 합격률을 보였기 때문
 사용자들에게 자신 있는 type에 맞는 course를 선택하도록 유도하는 것은 개인화된 학습 경험을 제공하며, 그 결과 최종 합격률을 높이는 데 중요한 역할을 할 수 있습니다. 
 각 type과 course별 합격률 데이터를 분석하고, 사용자가 자신의 특성에 맞는 과정을 선택할 수 있도록 지원하는 것은 인텔리픽 서비스의 효율성을 극대화하는 전략이 될 것입니다.
 """
+def get_pass_probability_by_type_and_course(dataframe):
+    # 최종 합격한 데이터 필터링
+    final_pass_df = dataframe.loc[dataframe["status"] == "최종합격"]
 
+    # 전체 사용자 수 (각 type별)
+    total_users_by_type = dataframe.groupby("type")["userid"].nunique()
 
+    # 각 type별 course에서 최종 합격한 user 수
+    pass_counts = final_pass_df.groupby(["type", "course"])["userid"].nunique()
+
+    # 확률 계산
+    pass_probabilities = (pass_counts / total_users_by_type) * 100
+
+    # DataFrame 변환
+    result = pass_probabilities.reset_index().rename(columns={"userid": "Pass Probability (%)"})
+    
+    return result
+
+# print(get_pass_probability_by_type_and_course(df))
+
+def get_suitable_course_depends_on_type(dataframe, user_type):
+    # 최종 합격한 데이터만 필터링
+    filtered_df = dataframe.loc[(dataframe["status"] == "최종합격") & (dataframe["type"] == user_type)]
+    
+    # 각 과정별(user_type) 합격한 user 수
+    course_counts = filtered_df.groupby('course')['userid'].nunique()
+    total_users = filtered_df['userid'].nunique()
+    
+    # 합격률 계산
+    course_percentages = (course_counts / total_users) * 100
+    
+    # 결과 DataFrame 생성
+    result = pd.DataFrame({
+        'Final Pass Count': course_counts,
+        '%': course_percentages
+    }).reset_index()
+    
+    # 합격률이 가장 높은 course 선택
+    best_course = result.loc[result['%'].idxmax(), 'course'] if not result.empty else None
+    
+    return best_course
+
+# print(get_suitable_course_depends_on_type(df, "resume"))
 
