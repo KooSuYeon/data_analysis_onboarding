@@ -106,7 +106,6 @@ def get_average_first_interval(dataframe):
         first_time = group.iloc[0]  # 첫 번째 'createdat' 값
         second_time = group.iloc[1]  # 두 번째 'createdat' 값
 
-        print(first_time, second_time)
         interval = (second_time - first_time).total_seconds()  # 초 단위로 계산
         intervals.append(interval)
         
